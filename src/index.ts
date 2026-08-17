@@ -102,11 +102,36 @@ const sampleItems: EstimateItem[] = [
   { name: "유지보수(월)", quantity: 3, unitPrice: 200000 },
 ];
 
+// CLI 사용법: npx tsx src/index.ts "품목명" 수량 단가
+// 인자가 없으면 sampleItems로 데모 실행한다.
+function parseCliArgs(argv: string[]): EstimateItem[] | null {
+  if (argv.length === 0) {
+    return null;
+  }
+
+  if (argv.length !== 3) {
+    console.error('사용법: npx tsx src/index.ts "품목명" 수량 단가');
+    process.exit(1);
+  }
+
+  const [name, quantityArg, unitPriceArg] = argv;
+  const quantity = Number(quantityArg);
+  const unitPrice = Number(unitPriceArg);
+
+  if (!Number.isFinite(quantity) || !Number.isFinite(unitPrice)) {
+    console.error("수량과 단가는 숫자여야 합니다.");
+    process.exit(1);
+  }
+
+  return [{ name, quantity, unitPrice }];
+}
+
 async function main() {
-  const estimateResult = calculateEstimate(sampleItems);
+  const items = parseCliArgs(process.argv.slice(2)) ?? sampleItems;
+  const estimateResult = calculateEstimate(items);
   await createEstimatePage(process.env.NOTION_DATABASE_ID ?? "", {
     ...estimateResult,
-    items: sampleItems,
+    items,
   });
 }
 
