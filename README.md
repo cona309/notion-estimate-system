@@ -1,5 +1,7 @@
 # Notion Estimate System
 
+[![CI](https://github.com/cona309/notion-estimate-system/actions/workflows/ci.yml/badge.svg)](https://github.com/cona309/notion-estimate-system/actions/workflows/ci.yml)
+
 견적 항목(품목명, 수량, 단가)을 입력받아 공급가액·부가세(10%)·총합계를 계산하고,
 결과를 Notion 데이터베이스에 새 페이지로 기록하는 TypeScript CLI 도구입니다.
 
